@@ -76,6 +76,18 @@
     <Filter Include="Src\Application\Object\Stage">
       <UniqueIdentifier>{64e11dd1-c023-40e5-b8de-1f919b89bbdb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\Player">
+      <UniqueIdentifier>{bf09bd3e-6960-4263-aaaa-a5824b55c990}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Cannon">
+      <UniqueIdentifier>{d4fab11b-ab8b-4681-81d0-82bdc451fb02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Back">
+      <UniqueIdentifier>{e828200b-e6a6-4123-8fa4-d7de1f3b87b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\enemy">
+      <UniqueIdentifier>{f9ed2b02-94f9-45fa-882b-45df16668f18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -246,6 +258,18 @@
     <ClInclude Include="Src\Application\Object\Stage\Stage.h">
       <Filter>Src\Application\Object\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\Player\Player.h">
+      <Filter>Src\Application\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Cannon\Cannon.h">
+      <Filter>Src\Application\Object\Cannon</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Back\Back.h">
+      <Filter>Src\Application\Object\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Enemy\enemy.h">
+      <Filter>Src\Application\Object\enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -388,6 +412,18 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Stage\Stage.cpp">
       <Filter>Src\Application\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Player\Player.cpp">
+      <Filter>Src\Application\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Cannon\Cannon.cpp">
+      <Filter>Src\Application\Object\Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Back\Back.cpp">
+      <Filter>Src\Application\Object\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Enemy\enemy.cpp">
+      <Filter>Src\Application\Object\enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
