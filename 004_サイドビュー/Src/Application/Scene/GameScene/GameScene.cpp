@@ -36,7 +36,10 @@ void GameScene::Event()
 	m_camera->SetCameraMatrix(transMat);
 
 	//被写界深度
-	m_camera->SetFocus(5,2,8);
+	//m_camera->SetFocus(5,2,8);
+
+	//ブルーム
+	//KdShaderManager::Instance().m_postProcessShader.SetBrightThreshold(0.7f);
 }
 
 void GameScene::Init()
@@ -51,11 +54,11 @@ void GameScene::Init()
 	//KdShaderManager::Instance().WorkAmbientController().SetAmbientLight({ 1,1,1,1 });
 
 	//フォグ(霧)
-	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
-																		//霧の色　　密度
-	KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 1,1,1 }, 0.05f);
-																	//霧の色　　上　下　カメラとの距離
-	KdShaderManager::Instance().WorkAmbientController().SetheightFog({ 1,1,1 }, 0, -2, 0);
+	//KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
+	//																	//霧の色　　密度
+	//KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 1,1,1 }, 0.05f);
+	//																//霧の色　　上　下　カメラとの距離
+	//KdShaderManager::Instance().WorkAmbientController().SetheightFog({ 1,1,1 }, 0, -2, 0);
 
 	std::shared_ptr<Stage> stg;
 	for (int i = 0; i < 5; i++)

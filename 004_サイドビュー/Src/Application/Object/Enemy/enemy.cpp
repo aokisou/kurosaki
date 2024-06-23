@@ -4,7 +4,7 @@
 
 void Enemy::Init()
 {
-	m_pos = { -20,1,0 };
+	m_pos = { -20,0,0 };
 	m_gravity = 1;
 	m_dir = { 1,0,0 };
 	m_goal = 0;
@@ -18,6 +18,12 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	//ポイントライト(点光源)
+	//最大100個まで
+	//毎フレーム追加する必要がある(毎フレームリセットされるため)
+	Math::Vector3 tmpPos = { 0,0.5f,0 };
+	KdShaderManager::Instance().WorkAmbientController().AddPointLight({ 3,0,0 }, 5, m_pos + tmpPos, true);
+
 	if (m_goal >= 5)
 	{
 		m_dir *= -1;

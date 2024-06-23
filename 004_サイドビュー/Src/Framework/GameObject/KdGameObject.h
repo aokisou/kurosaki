@@ -15,6 +15,15 @@ public:
 		eDrawTypeDepthOfShadow = 1 << 4,
 	};
 
+	enum objType
+	{
+		eNone,
+		ePlayer,
+		eEnemy,
+		eItem,
+		eMax
+	};
+
 	KdGameObject() {}
 	virtual ~KdGameObject() { Release(); }
 
@@ -66,6 +75,8 @@ public:
 	bool Intersects(const KdCollider::BoxInfo& targetBox, std::list<KdCollider::CollisionResult>* pResults);
 	bool Intersects(const KdCollider::RayInfo& targetShape, std::list<KdCollider::CollisionResult>* pResults);
 
+	UINT GetObjType() { return m_pbjType; }
+
 protected:
 
 	void Release() {}
@@ -87,4 +98,6 @@ protected:
 
 	// デバッグ情報クラス
 	std::unique_ptr<KdDebugWireFrame> m_pDebugWire = nullptr;
+
+	UINT m_pbjType = eNone;
 };

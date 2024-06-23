@@ -3,7 +3,7 @@
 
 void Player::Init()
 {
-	m_pos = {-20,1,0};
+	m_pos = {-10,0,0};
 	m_gravity = 1;
 	m_polygon.SetMaterial("Asset/Textures/char.png");
 	m_polygon.SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
@@ -31,12 +31,12 @@ void Player::Update()
 
 	int run[4] = { 24,25,24,26 };
 	m_polygon.SetUVRect(run[(int)m_anime]);
-	m_anime += 0.1f;
+	//m_anime += 0.1f;
 
-	if (m_anime >= 4)
-	{
-		m_anime = 0;
-	}
+	//if (m_anime >= 4)
+	//{
+	//	m_anime = 0;
+	//}
 }
 
 void Player::PostUpdate()
@@ -151,5 +151,21 @@ void Player::GenerateDepthMapFromLight()
 
 void Player::DrawLit()
 {
+	//ディゾルブ(解けた感じの表現)
+	static float d = 0;
+	//d += 0.01f;
+	//if (d > 1.0f)
+	//{
+	//	d = 0.0f;
+	//}
+
+	d -= 0.01f;
+	if (d < 0.0f)
+	{
+		d = 1.0f;
+	}
+
+	KdShaderManager::Instance().m_StandardShader.SetDissolve(d);
+
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(m_polygon, m_mWorld);
 }
