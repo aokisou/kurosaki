@@ -12,16 +12,20 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
-	std::shared_ptr<Tank> tank = std::make_shared<Tank>();
-	AddObject(tank);
-
 	std::shared_ptr<Ground> ground = std::make_shared<Ground>();
 	AddObject(ground);
 
-	std::shared_ptr<Yama> y = std::make_shared<Yama>();
-	AddObject(y);
 	std::shared_ptr<Moto> m = std::make_shared<Moto>();
+	m->SetPos({ 10,0,10 });
 	AddObject(m);
+	std::shared_ptr<Yama> y = std::make_shared<Yama>();
+	y->SetPos({ -10,0,10 });
+	AddObject(y);
+
+	std::shared_ptr<Tank> tank = std::make_shared<Tank>();
+	m->SetTarget(tank);
+	y->SetTarget(tank);
+	AddObject(tank);
 
 	std::shared_ptr<TPSCamera> camera = std::make_shared<TPSCamera>();
 	camera->Init();

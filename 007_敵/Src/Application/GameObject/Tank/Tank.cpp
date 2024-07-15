@@ -2,11 +2,14 @@
 
 #include "../Camera/CameraBase.h"
 #include "../../main.h"
+#include "../../Scene/SceneManager.h"
 
 void Tank::Init()
 {
 	m_spModel = std::make_shared<KdModelData>();
 	m_spModel->Load("Asset/Models/tank/tank.gltf");
+
+	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
 	Math::Matrix transMat;
 	transMat = Math::Matrix::CreateTranslation(m_pos);
@@ -95,11 +98,33 @@ void Tank::Update()
 	}
 
 	m_pos += m_moveDir * 0.1f;
+}
 
-	Math::Matrix rotateMat,transMat;
+void Tank::PostUpdate()
+{
+	if (m_moveDir.LengthSquared())
+	{
+		KdCollider::SphereInfo sphere;
+		sphere.m_sphere.Center = m_pos;
+		sphere.m_sphere.Center.y += 1.0f;
+		sphere.m_sphere.Radius = 2.f;
+		sphere.m_type = KdCollider::Type::TypeDamage;
+
+		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+
+		for (const auto& obj : SceneManager::Instance().GetObjList())
+		{
+			if (obj->Intersects(sphere, nullptr))
+			{
+				obj->OnHit();
+			}
+		}
+	}
+
+	Math::Matrix rotateMat, transMat;
 	rotateMat = Math::Matrix::CreateFromYawPitchRoll((DirectX::XMConvertToRadians(m_angle.y)),
-				(DirectX::XMConvertToRadians(m_angle.x)),
-				(DirectX::XMConvertToRadians(m_angle.z)));
+		(DirectX::XMConvertToRadians(m_angle.x)),
+		(DirectX::XMConvertToRadians(m_angle.z)));
 	transMat = Math::Matrix::CreateTranslation(m_pos);
 	m_mWorld = rotateMat * transMat;
 }
