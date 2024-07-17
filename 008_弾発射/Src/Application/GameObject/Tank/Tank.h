@@ -22,4 +22,6 @@ private:
 
 	std::shared_ptr<KdModelData> m_spModel = {};
 	std::weak_ptr<CameraBase> m_wpCamera;
+
+	bool m_bTPS = false;
 };

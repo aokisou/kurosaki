@@ -6,9 +6,12 @@
 #include "../../GameObject/Enemy/Moto/Moto.h"
 #include "../../GameObject/Enemy/Yama/Yama.h"
 #include "../../GameObject/Bullet/Bullet.h"
+#include "../../main.h"
 
 void GameScene::Event()
 {
+	Application::Instance().m_log.Clear();
+	Application::Instance().m_log.AddLog("objList : %d\n", (int)m_objList.size());
 }
 
 void GameScene::Init()

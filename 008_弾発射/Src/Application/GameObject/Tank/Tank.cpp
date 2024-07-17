@@ -45,67 +45,99 @@ void Tank::Update()
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 	{
 		std::shared_ptr<Bullet> b = std::make_shared<Bullet>();
-		b->SetPos(m_pos);
+		//b->SetPos(m_pos);
+		Math::Vector3 pos;
+		pos = m_pos + m_mWorld.Backward() * Math::Vector3(3, 0, 3);
+		pos.y += 2;
+		b->SetParam(pos, m_mWorld.Backward(), 1, 1000);
 		SceneManager::Instance().AddObject(b);
 	}
 
-	//移動していたら
-	if (m_moveDir.LengthSquared() != 0)
+	Math::Matrix rotMat;
+
+	if (GetAsyncKeyState(VK_LSHIFT) & 0x8000)
 	{
+		m_bTPS = true;
+	}
+	else
+	{
+		m_bTPS = false;
+	}
+
+	if (m_bTPS)
+	{
+		//TPS
 		m_moveDir.Normalize();
 
-		Math::Matrix rotYMat = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_angle.y));
-
-		//キャラの正面方向ベクトル
-		Math::Vector3 nowDir = Math::Vector3::TransformNormal(Math::Vector3(0, 0, 1), rotYMat);
-		nowDir.Normalize();
-
-		//移動方向のベクトル
-		Math::Vector3 targetDir = m_moveDir;
-		targetDir.Normalize();
-
-		//内積
-		//ベクトルA * ベクトルB * cosθ
-		//	 1      *     1     * cosθ
-		float d = nowDir.Dot(targetDir);
-
-		//丸め誤差の都合上「1」を超える可能性があるクランプ(遮断)する
-		d = std::clamp(d, -1.0f, 1.0f);
-
-		float ang = DirectX::XMConvertToDegrees(acos(d));
-
-		if (ang >= 0.1f)
+		rotMat = m_wpCamera.lock()->GetRotationYMatrix();
+	}
+	else
+	{
+		//TPV
+		//移動していたら
+		if (m_moveDir.LengthSquared() != 0)
 		{
-			if (ang > 5)
+			m_moveDir.Normalize();
+
+			Math::Matrix rotYMat = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_angle.y));
+
+			//キャラの正面方向ベクトル
+			Math::Vector3 nowDir = Math::Vector3::TransformNormal(Math::Vector3::Backward, rotYMat);
+			nowDir.Normalize();
+
+			//移動方向のベクトル
+			Math::Vector3 targetDir = m_moveDir;
+			targetDir.Normalize();
+
+			//内積
+			//ベクトルA * ベクトルB * cosθ
+			//	 1      *     1     * cosθ
+			float d = nowDir.Dot(targetDir);
+
+			//丸め誤差の都合上「1」を超える可能性があるクランプ(遮断)する
+			d = std::clamp(d, -1.0f, 1.0f);
+
+			float ang = DirectX::XMConvertToDegrees(acos(d));
+
+			if (ang >= 0.1f)
 			{
-				ang = 5;
-			}
-			//外積
-			//二つのベクトルに対し垂直に伸びるベクトル
-			Math::Vector3 c = targetDir.Cross(nowDir);
-			c.Normalize();
-			if (c.y >= 0)
-			{
-				m_angle.y -= ang;
-				if (m_angle.y < 0)
+				if (ang > 5)
 				{
-					m_angle.y += 360;
+					ang = 5;
 				}
-			}
-			else
-			{
-				m_angle.y += ang;
-				if (m_angle.y >= 360)
+				//外積
+				//二つのベクトルに対し垂直に伸びるベクトル
+				Math::Vector3 c = targetDir.Cross(nowDir);
+				c.Normalize();
+				if (c.y >= 0)
 				{
-					m_angle.y -= 360;
+					m_angle.y -= ang;
+					if (m_angle.y < 0)
+					{
+						m_angle.y += 360;
+					}
+				}
+				else
+				{
+					m_angle.y += ang;
+					if (m_angle.y >= 360)
+					{
+						m_angle.y -= 360;
+					}
 				}
 			}
 		}
 
-		Application::Instance().m_log.AddLog("ang : %.2f m_ang : %.2f\n", ang, m_angle.y);
+		rotMat = Math::Matrix::CreateFromYawPitchRoll((DirectX::XMConvertToRadians(m_angle.y)),
+			(DirectX::XMConvertToRadians(m_angle.x)),
+			(DirectX::XMConvertToRadians(m_angle.z)));
 	}
 
 	m_pos += m_moveDir * 0.1f;
+
+	Math::Matrix transMat;
+	transMat = Math::Matrix::CreateTranslation(m_pos);
+	m_mWorld = rotMat * transMat;
 }
 
 void Tank::PostUpdate()
@@ -128,13 +160,6 @@ void Tank::PostUpdate()
 			}
 		}
 	}
-
-	Math::Matrix rotateMat, transMat;
-	rotateMat = Math::Matrix::CreateFromYawPitchRoll((DirectX::XMConvertToRadians(m_angle.y)),
-		(DirectX::XMConvertToRadians(m_angle.x)),
-		(DirectX::XMConvertToRadians(m_angle.z)));
-	transMat = Math::Matrix::CreateTranslation(m_pos);
-	m_mWorld = rotateMat * transMat;
 }
 
 void Tank::DrawLit()
