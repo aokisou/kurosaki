@@ -7,7 +7,7 @@ public:
 	~Ground()override {}
 
 	void Init()override;
-	void DrawUnLit()override;
+	void DrawLit()override;
 
 private:
 	std::shared_ptr<KdModelData> m_spModel = {};

@@ -11,7 +11,7 @@ void Ground::Init()
 	m_mWorld = scaleMat * transMat;
 }
 
-void Ground::DrawUnLit()
+void Ground::DrawLit()
 {
 	if (m_spModel)
 	{
