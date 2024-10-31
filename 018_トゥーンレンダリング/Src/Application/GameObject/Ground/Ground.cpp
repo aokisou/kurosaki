@@ -6,7 +6,7 @@ void Ground::Init()
 	m_spModel->Load("Asset/Models/Ground/Ground.gltf");
 
 	m_spModelObj = std::make_shared<KdModelData>();
-	m_spModelObj->Load("Asset/Models/map/map2.gltf");
+	m_spModelObj->Load("Asset/Models/map/map.gltf");
 
 	Math::Matrix scaleMat,transMat;
 	scaleMat = Math::Matrix::CreateScale(100);

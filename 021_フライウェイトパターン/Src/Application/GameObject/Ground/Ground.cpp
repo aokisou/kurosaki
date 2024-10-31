@@ -3,10 +3,10 @@
 void Ground::Init()
 {
 	m_spModel = std::make_shared<KdModelData>();
-	m_spModel->Load("Asset/Models/Ground/Ground.gltf");
+	m_spModel->Load("Asset/Models/Ground_r/Ground_r.gltf");
 
-	m_spModelObj = std::make_shared<KdModelData>();
-	m_spModelObj->Load("Asset/Models/map/map2.gltf");
+	m_pCollider = std::make_unique<KdCollider>();
+	m_pCollider->RegisterCollisionShape("ground", m_spModel, KdCollider::Type::TypeGround);
 
 	Math::Matrix scaleMat,transMat;
 	scaleMat = Math::Matrix::CreateScale(100);
@@ -14,14 +14,10 @@ void Ground::Init()
 	m_mWorld = scaleMat * transMat;
 }
 
-void Ground::DrawLit()
+void Ground::DrawUnLit()
 {
 	if (m_spModel)
 	{
 		KdShaderManager::Instance().m_StandardShader.DrawModel(*m_spModel, m_mWorld);
-	}
-	if (m_spModelObj)
-	{
-		KdShaderManager::Instance().m_StandardShader.DrawModel(*m_spModelObj);
 	}
 }
